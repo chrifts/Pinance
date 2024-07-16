@@ -1,29 +1,29 @@
 <style>
   .cont {
-    width: 50%;
+    width: 100%;
     display: flex;
     justify-content: center;
     margin: 0 auto;
   }
 </style>
-<div style="display: flex;">
+<div class="container-fluid" style="overflow: hidden;">
   <div style="flex-grow: 2;">
-    <div style="display: inline;">
+    <!-- <div style="display: inline;">
       <label for="fixedPieSize">fixed pie Size?</label>
       <input id="fixedPieSize" type="checkbox" (change)="updateFixedPieSize($event)" [(checked)]="fixedPieSize">
-    </div>
+    </div> -->
 
     <div *ngIf="fixedPieSize()" style="display: inline;">
       <label for="pieSize">Size</label>
       <input id="pieSize" type="number" (input)="updatePieSize($event)" placeholder="Pie size" [(value)]="pieSize">
     </div>
 
-    <div class="cont" [style]="'top: '+ top() + 'px'" *ngIf="salary()">
+    <div class="cont" [style]="'top: '+ top() + 'px'">
       <ag-charts [options]="options"></ag-charts>
     </div>
   </div>
 
-  <div style="flex-grow: 1;">
+  <div>
     <div style="display: inline;">
       <label for="salary" style="color: green; font-weight: bold; font-size: 24px;">Salario: </label>
       <input class="form-control" id="salary" type="number" (input)="updateSalary($event)" placeholder="Salary"

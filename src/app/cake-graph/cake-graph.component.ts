@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, signal } from '@angular/core';
 import { AgCharts } from "ag-charts-angular";
 import { AgChartOptions } from "ag-charts-community";
 import { Asset, getData, saveData } from './data';
@@ -20,7 +20,7 @@ export class CakeGraphComponent implements OnInit, OnDestroy {
   pieSize = signal<number>(700);
   top = signal<number>(350);
   fixedPieSize = signal<boolean>(false);
-  viewportHeightOffset: number = 150;
+  viewportHeightOffset: number = 200;
 
   gastoAsset = signal<string>('')
   gastoAmount = signal<number>(0);
@@ -30,7 +30,11 @@ export class CakeGraphComponent implements OnInit, OnDestroy {
   viewportHeight!: number;
   private subscription!: Subscription;
 
-  constructor(private viewportService: ViewportService) { }
+  constructor(private viewportService: ViewportService) {
+    effect(()=>{
+      this.setPieData();
+    })
+  }
 
   updateSalary(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -130,9 +134,7 @@ export class CakeGraphComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.viewportService.viewportHeight$.subscribe(height => {
       this.viewportHeight = height;
-      if (!this.fixedPieSize()) {
-        this.pieSize.update(() => height - this.viewportHeightOffset);
-      }
+      this.pieSize.update(() => height - this.viewportHeightOffset);
     });
     this.setPieData();
     this.gastos.update(() => this.loadData());
