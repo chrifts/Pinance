@@ -1,0 +1,69 @@
+<style>
+  .cont {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+  }
+</style>
+<div style="display: flex;">
+  <div style="flex-grow: 2;">
+    <div style="display: inline;">
+      <label for="fixedPieSize">fixed pie Size?</label>
+      <input id="fixedPieSize" type="checkbox" (change)="updateFixedPieSize($event)" [(checked)]="fixedPieSize">
+    </div>
+
+    <div *ngIf="fixedPieSize()" style="display: inline;">
+      <label for="pieSize">Size</label>
+      <input id="pieSize" type="number" (input)="updatePieSize($event)" placeholder="Pie size" [(value)]="pieSize">
+    </div>
+
+    <div class="cont" [style]="'top: '+ top() + 'px'" *ngIf="salary()">
+      <ag-charts [options]="options"></ag-charts>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1;">
+    <div style="display: inline;">
+      <label for="salary" style="color: green; font-weight: bold; font-size: 24px;">Salario: </label>
+      <input class="form-control" id="salary" type="number" (input)="updateSalary($event)" placeholder="Salary"
+        [(value)]="salary">
+    </div>
+    <hr>
+    <h3 style="display: inline;">Gastos: </h3> <span style="color: red; font-weight: bold;">{{totalSpent}}€</span>
+    <hr>
+    <div style="margin-bottom: 15px;">
+      <input class="form-control" type="text" placeholder="Nombre de gasto" (input)="updateAssetToAdd($event)"
+        [(value)]="gastoAsset" />
+      <input class="form-control" type="number" placeholder="importe" (input)="updateAmountToAdd($event)"
+        [(value)]="gastoAmount" />
+      <button class="btn btn-success" (click)="addGasto()">
+        add
+      </button>
+      <button class="btn btn-warning" (click)="clearGastos()">
+        Clear all
+      </button>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+        <td>Nombre</td>
+        <td>Valor</td>
+        <td>Accion</td>
+      </thead>
+      <tbody>
+        <tr *ngFor="let gasto of gastos(); let i = index">
+          <td>{{(i == 0 ? '' : gasto.asset)}}</td>
+          <td>{{(i == 0 ? '' : gasto.amount + '€')}}</td>
+          <td>
+            <div *ngIf="i > 0">
+              <button class="btn btn-danger" (click)="removeGasto(i)">delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
